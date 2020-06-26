@@ -1,15 +1,20 @@
 class ArticlesController < ApplicationController
   before_action :set_article, only: [:show, :edit, :update, :destroy]
+  before_action :move_to_index, except: [:index, :show]
 
   # GET /articles
   # GET /articles.json
   def index
     @articles = Article.all
+    # @articles = Article.includes(:user).order("created_at DESC")
   end
 
   # GET /articles/1
   # GET /articles/1.json
   def show
+    # @article = Article.find(params[:id])
+    @comment = Comment.new
+    @comments = @article.comments.includes(:user)
   end
 
   # GET /articles/new
@@ -69,6 +74,10 @@ class ArticlesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def article_params
-      params.require(:article).permit(:title, :content)
+      params.require(:article).permit(:title, :content).merge(user_id: current_user.id)
+    end
+
+    def move_to_index
+      redirect_to action: :index unless user_signed_in?
     end
 end
