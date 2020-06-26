@@ -11,13 +11,16 @@
   </thead>
 
   <tbody>
+    <%= image_tag 'air.jpg', class: 'foto' %>
     <% @articles.each do |article| %>
       <tr>
+      <%# <% if user_signed_in? && current_user.id == article.user_id %>
         <td><%= article.title %></td>
-        <td><%= link_to '表示', article %></td>
-        <td><%= link_to '編集', edit_article_path(article) %></td>
-        <td><%= link_to '削除', article, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to '表示', article, class: "large" %></td>
+        <td><%= link_to '編集', edit_article_path(article), class: "large" %></td>
+        <td><%= link_to '削除', article, method: :delete, data: { confirm: 'Are you sure?' }, class: "large" %></td>
       </tr>
+      <%# <% end %>
       <tr>
         <td colspan="4"><%= article.content %></td>
       </tr>
@@ -27,4 +30,4 @@
 
 <br>
 
-<%= link_to '新規投稿', new_article_path %>
+<%= link_to '新規投稿', new_article_path, class: "large" %>

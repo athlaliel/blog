@@ -6,5 +6,30 @@
   <%= @article.content %> 
 </p>
 
-<%= link_to 'Edit', edit_article_path(@article) %> |
-<%= link_to 'Back', articles_path %>
+<%# <% if user_signed_in? && current_user.id == @article.user_id %> %>
+<%= link_to '編集', edit_article_path(@article), class: "large" %> |
+<%= link_to '戻る', articles_path, class: "large" %>
+<%# <% end %> 
+
+<div class="container">
+    <% if current_user %>
+      <%= form_with(model: [@article, @comment], local: true) do |form| %>
+        <%= form.text_area :text, placeholder: "コメントする", rows: "2" %>
+        <%= form.submit "SEND" %>
+      <% end %>
+    <% else %>
+      <strong><p>※※※ コメントの投稿には新規登録/ログインが必要です ※※※</p></strong>
+    <% end %>
+    <div class="comments">
+      <h4>＜コメント一覧＞</h4>
+      <% if @comments %>
+        <% @comments.each do |comment| %>
+          <p>
+            <strong><%= link_to comment.user.nickname, "/users/#{comment.user_id}" %>：</strong>
+            <%= comment.text %>
+          </p>
+        <% end %>
+      <% end %>
+    </div>
+</div>
+
